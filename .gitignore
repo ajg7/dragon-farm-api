@@ -1,0 +1,74 @@
+# Visual Studio files
+.vs/
+.vscode/
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet packages
+*.nupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Environment variables
+.env
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Visual Studio for Mac
+.idea/
+.vscode/
+*.userprefs
+*.usertasks
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/
+*.sln.iml
