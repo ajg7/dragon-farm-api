@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using DragonFarmApi.Data;
 using System.Reflection;
+using DragonFarmApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
