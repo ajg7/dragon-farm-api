@@ -6,7 +6,7 @@ public class DragonTrait
     public char AlleleA { get; set; }
     public char AlleleB { get; set; }
 
-    public Dragon? Dragon { get; set; }
-    public Trait? Trait { get; set; }
+    public virtual Dragon? Dragon { get; set; }
+    public virtual Trait? Trait { get; set; }
 }
 

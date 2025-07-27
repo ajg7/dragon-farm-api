@@ -1,8 +1,9 @@
 ﻿using DragonFarmApi.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonFarmApi;
-public class DragonFarmContext : DbContext
+public class DragonFarmContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
 {
     public DragonFarmContext(DbContextOptions<DragonFarmContext> options)
         : base(options) { }
@@ -13,6 +14,8 @@ public class DragonFarmContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder b)
     {
+        base.OnModelCreating(b);
+
         // Configure DragonTrait composite key
         b.Entity<DragonTrait>()
             .HasKey(x => new { x.DragonId, x.TraitId });
@@ -44,6 +47,37 @@ public class DragonFarmContext : DbContext
         b.Entity<DragonTrait>()
             .Property(dt => dt.AlleleB)
             .HasColumnType("nvarchar(1)");
+
+        // Seed roles
+        var adminRoleId = "1";
+        var userRoleId = "2";
+        var managerRoleId = "3";
+
+        b.Entity<ApplicationRole>().HasData(
+            new ApplicationRole 
+            { 
+                Id = adminRoleId, 
+                Name = "Admin", 
+                NormalizedName = "ADMIN", 
+                Description = "Full access to all dragon farm operations",
+                CreatedAt = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            },
+            new ApplicationRole 
+            { 
+                Id = userRoleId, 
+                Name = "User", 
+                NormalizedName = "USER", 
+                Description = "Basic access to view dragons and traits",
+                CreatedAt = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            },
+            new ApplicationRole 
+            { 
+                Id = managerRoleId, 
+                Name = "Manager", 
+                NormalizedName = "MANAGER", 
+                Description = "Can manage dragons and breeding operations",
+                CreatedAt = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            });
 
         // Seed trait data
         b.Entity<Trait>().HasData(
