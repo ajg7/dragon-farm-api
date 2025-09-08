@@ -20,8 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Orchestrators\" />
   </ItemGroup>
 
 </Project>

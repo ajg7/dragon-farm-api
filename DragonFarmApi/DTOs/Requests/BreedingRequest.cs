@@ -1,4 +1,4 @@
-﻿namespace DragonFarmApi.DTOs
+﻿namespace DragonFarmApi.DTOs.Requests
 {
     public class BreedingRequest
     {

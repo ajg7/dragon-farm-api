@@ -1,5 +1,7 @@
 using DragonFarmApi.DTOs;
+using DragonFarmApi.DTOs.Responses;
 using DragonFarmApi.Models;
+using DragonFarmApi.Orchestrators.Interfaces;
 using DragonFarmApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,19 +21,23 @@ public class AuthController : ControllerBase
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IJwtService _jwtService;
     private readonly ILogger<AuthController> _logger;
+    private readonly IAuthOrchestrator _authOrchestrator;
+
 
     public AuthController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<ApplicationRole> roleManager,
         IJwtService jwtService,
-        ILogger<AuthController> logger)
+        ILogger<AuthController> logger,
+        IAuthOrchestrator authOrchestrator)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _roleManager = roleManager;
         _jwtService = jwtService;
         _logger = logger;
+        _authOrchestrator = authOrchestrator;
     }
 
     /// <summary>
@@ -219,19 +225,19 @@ public class AuthController : ControllerBase
     /// <returns>List of all roles</returns>
     [HttpGet("roles")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<object>> GetRoles()
+    public async Task<ActionResult<GetRolesResponse>> GetRoles()
     {
         try
         {
-            var roles = _roleManager.Roles.Select(r => new
-            {
-                Id = r.Id,
-                Name = r.Name,
-                Description = r.Description,
-                CreatedAt = r.CreatedAt
-            }).ToList();
+            var roles = await _authOrchestrator.GetAllRolesAsync();
 
-            return Ok(roles);
+            var response = new GetRolesResponse
+            {
+                DragonFarmUserRoles = roles,
+                TotalRoles = roles.Count,
+            };
+
+            return Ok(response);
         }
         catch (Exception ex)
         {

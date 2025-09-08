@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using DragonFarmApi.Orchestrators.Interfaces;
+using DragonFarmApi.Orchestrators; 
+using DragonFarmApi.Repositories.Interfaces; 
+using DragonFarmApi.Repositories; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +76,9 @@ builder.Services.AddAuthorization();
 
 // Register custom services
 builder.Services.AddScoped<IJwtService, JwtService>();
+// Register auth repository and orchestrator
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthOrchestrator, AuthOrchestrator>();
 
 // Add Swagger/OpenAPI services
 builder.Services.AddEndpointsApiExplorer();
@@ -185,6 +192,11 @@ using (var scope = app.Services.CreateScope())
             var result = await userManager.CreateAsync(adminUser, "Admin123!");
             if (result.Succeeded)
             {
+                // Ensure role exists (in case seeding hasn't applied yet in some environments)
+                if (!await roleManager.RoleExistsAsync("Admin"))
+                {
+                    await roleManager.CreateAsync(new ApplicationRole { Name = "Admin", NormalizedName = "ADMIN" });
+                }
                 await userManager.AddToRoleAsync(adminUser, "Admin");
                 Console.WriteLine($"Default admin user created: {adminEmail} / Admin123!");
             }
