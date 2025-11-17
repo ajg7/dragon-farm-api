@@ -68,6 +68,11 @@ public class DragonsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Create a new dragon (User role and above)
+    /// </summary>
+    /// <param name="dragon">Dragon data to create</param>
+    /// <returns>The created dragon with its assigned ID</returns>
     [HttpPost]
     [Authorize(Roles = "User,Manager,Admin")]
     public async Task<ActionResult<Dragon>> CreateDragon([FromBody] Dragon dragon)
@@ -84,6 +89,12 @@ public class DragonsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Update an existing dragon by ID (User role and above)
+    /// </summary>
+    /// <param name="id">ID of the dragon to update</param>
+    /// <param name="dragon">Updated dragon data</param>
+    /// <returns>The updated dragon, or404 if not found</returns>
     [HttpPut("{id}")]
     [Authorize(Roles = "User,Manager,Admin")]
     public async Task<ActionResult<Dragon>> UpdateDragon(Guid id, [FromBody] Dragon dragon)
@@ -93,6 +104,11 @@ public class DragonsController : ControllerBase
         return Ok(dragonResult);
     }
 
+    /// <summary>
+    /// Delete a dragon by ID (User role and above)
+    /// </summary>
+    /// <param name="id">ID of the dragon to delete</param>
+    /// <returns>No content if deletion succeeds, or404 if not found</returns>
     [HttpDelete("{id}")]
     [Authorize(Roles = "User,Manager,Admin")]
     public async Task<ActionResult<Dragon>> DeleteDragon(Guid id)
