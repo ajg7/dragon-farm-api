@@ -23,4 +23,19 @@ public class DragonOrchestrator : IDragonOrchestrator
     {
         return await _dragonRepository.GetDragonByIdAsync(id);
     }
+
+    public async Task<Dragon> CreateDragonAsync(Dragon dragon)
+    {
+        return await _dragonRepository.CreateDragonAsync(dragon);
+    }
+
+    public async Task<Dragon?> UpdateDragonAsync(Guid id, Dragon dragon)
+    {
+        return await _dragonRepository.UpdateDragonAsync(id, dragon);
+    }
+
+    public async Task<bool> DeleteDragonAsync(Guid id)
+    {
+        return await _dragonRepository.DeleteDragonAsync(id);
+    }
 }

@@ -50,4 +50,56 @@ public class DragonRepository : IDragonRepository
             throw;
         }
     }
+
+    public async Task<Dragon> CreateDragonAsync(Dragon dragon)
+    {
+        try
+        {
+            _dragonFarmContext.Dragons.Add(dragon);
+            var saveResults = await _dragonFarmContext.SaveChangesAsync();
+            if (saveResults > 0) return dragon;
+            else throw new Exception("Failed to create dragon");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating new dragon in database");
+            throw;
+        }
+    }
+
+    public async Task<Dragon?> UpdateDragonAsync(Guid id, Dragon dragon)
+    {
+        try
+        {
+            var existingDragon = await _dragonFarmContext.Dragons.FindAsync(id);
+            if (existingDragon == null) return null;
+            existingDragon.Name = dragon.Name;
+            _dragonFarmContext.Dragons.Update(existingDragon);
+            var saveResults = await _dragonFarmContext.SaveChangesAsync();
+            if (saveResults > 0) return existingDragon;
+            else throw new Exception("Failed to update dragon");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error updating dragon with ID {id} in database");
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteDragonAsync(Guid id)
+    {
+        try
+        {
+            var existingDragon = await _dragonFarmContext.Dragons.FindAsync(id);
+            if (existingDragon == null) return false;
+            _dragonFarmContext.Dragons.Remove(existingDragon);
+            var saveResults = await _dragonFarmContext.SaveChangesAsync();
+            return saveResults > 0;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error deleting dragon with ID {id} from database");
+            throw;
+        }
+    }
 }
